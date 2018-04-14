@@ -1,6 +1,9 @@
 FROM php:5.6-fpm
 
-RUN apt-get update \
+ENV TZ=Asia/Taipei
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+    && apt-get update \
     && apt-get install -y --no-install-recommends \
         curl \
         libmcrypt-dev \
