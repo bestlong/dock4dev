@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+
+  web:
+    build: ./nginx
+    volumes:
+      - ./nginx/sites:/etc/nginx/sites-available
+      - ../:/var/www
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - php-fpm
+    networks:
+      - frontend
+
+  php-fpm:
+    build: ./php/fpm/5.6
+    volumes:
+      - ../:/var/www
+    depends_on:
+      - mysql
+    networks:
+      - frontend
+      - backend
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - db-mysql-data:/var/lib/mysql
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=dev_db
+      - MYSQL_USER=devman
+      - MYSQL_PASSWORD=secret
+    ports:
+      - 3306:3306
+    networks:
+      - backend
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+    ports:
+      - 8080:80
+    networks:
+      - frontend
+      - backend
+
+networks:
+  frontend:
+  backend:
+
+volumes:
+  db-mysql-data:
