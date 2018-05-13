@@ -2,6 +2,12 @@ version: '3'
 
 services:
 
+  workspace:
+    build: ./workspace/5.6
+    networks:
+      - frontend
+      - backend
+
   nginx:
     build: ./nginx
     volumes:
@@ -52,6 +58,15 @@ services:
       - PMA_ARBITRARY=1
     ports:
       - 8080:80
+    networks:
+      - frontend
+      - backend
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
     networks:
       - frontend
       - backend
