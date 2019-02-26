@@ -10,7 +10,7 @@ RUN set -xe; ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/t
         libmcrypt-dev \
         libjpeg-dev libpng-dev \
     && docker-php-ext-install mcrypt mysqli pdo_mysql \
-    && php -m | grep -q "mcrypt"
+    && php -m | grep -q 'mcrypt'
 
 RUN set -xe; \
     # pdo_dblib
