@@ -1,6 +1,7 @@
 FROM mysql:8.0
 
-ENV TZ=Asia/Taipei
+ARG TZ=Asia/Taipei
+ENV TZ=${TZ}
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
