@@ -26,6 +26,7 @@ services:
       - php56-fpm
       - php71-fpm
       - php72-fpm
+      - php73-fpm
     networks:
       - frontend
 
@@ -57,6 +58,20 @@ services:
 
   php72-fpm:
     build: ./php/fpm/7.2
+    volumes:
+      - ../:/var/www
+    environment:
+      - TZ=${TZ}
+    # ports:
+    #   - 9000:9000
+    depends_on:
+      - mysql
+    networks:
+      - frontend
+      - backend
+
+  php73-fpm:
+    build: ./php/fpm/7.3
     volumes:
       - ../:/var/www
     environment:
