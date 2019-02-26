@@ -23,13 +23,13 @@ services:
       - 80:80
       - 443:443
     depends_on:
-      - php-fpm
+      - php56-fpm
       - php71-fpm
       - php72-fpm
     networks:
       - frontend
 
-  php-fpm:
+  php56-fpm:
     build: ./php/fpm/5.6
     volumes:
       - ../:/var/www
@@ -42,7 +42,7 @@ services:
       - backend
 
   php71-fpm:
-    build: ./php/fpm/7.1/alpine
+    build: ./php/fpm/7.1
     volumes:
       - ../:/var/www
     environment:
