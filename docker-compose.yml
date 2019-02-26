@@ -3,7 +3,11 @@ version: '3'
 services:
 
   workspace:
-    build: ./workspace/5.6
+    build: ./workspace
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ../:/var/www
     networks:
       - frontend
       - backend
@@ -14,7 +18,7 @@ services:
       - ./nginx/sites:/etc/nginx/sites-available
       - ../:/var/www
     environment:
-      - TZ=Asia/Taipei
+      - TZ=${TZ}
     ports:
       - 80:80
       - 443:443
@@ -28,7 +32,7 @@ services:
     volumes:
       - ../:/var/www
     environment:
-      - TZ=Asia/Taipei
+      - TZ=${TZ}
     depends_on:
       - mysql
     networks:
@@ -41,7 +45,7 @@ services:
       - db-mysql-data:/var/lib/mysql
       - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     environment:
-      - TZ=Asia/Taipei
+      - TZ=${TZ}
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=dev_db
       - MYSQL_USER=devman
@@ -54,7 +58,7 @@ services:
   phpmyadmin:
     build: ./phpmyadmin
     environment:
-      - TZ=Asia/Taipei
+      - TZ=${TZ}
       - PMA_ARBITRARY=1
     ports:
       - 8080:80
@@ -64,6 +68,8 @@ services:
 
   mailhog:
     image: mailhog/mailhog
+    environment:
+      - TZ=${TZ}
     ports:
       - 1025:1025
       - 8025:8025
