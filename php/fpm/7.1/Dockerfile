@@ -1,16 +1,31 @@
-FROM php:5.6-fpm
+FROM php:7.1-fpm
 
 ARG TZ=Asia/Taipei
 ENV TZ=${TZ}
 
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+RUN set -xe; ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         curl \
         libmcrypt-dev \
         libjpeg-dev libpng-dev \
     && docker-php-ext-install mcrypt mysqli pdo_mysql \
-    && php -m
+    && php -m | grep -q "mcrypt"
+
+RUN set -xe; \
+    # pdo_dblib
+    apt-get update && apt-get install -y freetds-bin freetds-dev \
+    && ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/ \
+    && curl -L -o /tmp/PHP-7.1.tar.gz https://github.com/php/php-src/archive/PHP-7.1.tar.gz \
+    && tar zxf /tmp/PHP-7.1.tar.gz -C /tmp \
+    && cd /tmp/php-src-PHP-7.1/ext/pdo_dblib \
+    && phpize \
+    && ./configure \
+    && make && make install \
+    && rm -rf /tmp/PHP-7.1.tar.gz \
+    && rm -rf /tmp/php-src-PHP-7.1 \
+    && docker-php-ext-enable pdo_dblib \
+    && php -m | grep -q 'pdo_dblib'
 
 WORKDIR /var/www
 

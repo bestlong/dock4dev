@@ -24,6 +24,8 @@ services:
       - 443:443
     depends_on:
       - php-fpm
+      - php71-fpm
+      - php72-fpm
     networks:
       - frontend
 
@@ -33,6 +35,34 @@ services:
       - ../:/var/www
     environment:
       - TZ=${TZ}
+    depends_on:
+      - mysql
+    networks:
+      - frontend
+      - backend
+
+  php71-fpm:
+    build: ./php/fpm/7.1/alpine
+    volumes:
+      - ../:/var/www
+    environment:
+      - TZ=${TZ}
+    # ports:
+    #   - 9000:9000
+    depends_on:
+      - mysql
+    networks:
+      - frontend
+      - backend
+
+  php72-fpm:
+    build: ./php/fpm/7.2
+    volumes:
+      - ../:/var/www
+    environment:
+      - TZ=${TZ}
+    # ports:
+    #   - 9000:9000
     depends_on:
       - mysql
     networks:
