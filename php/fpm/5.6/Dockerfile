@@ -30,6 +30,11 @@ RUN set -xe; \
     && docker-php-ext-enable pdo_dblib \
     && php -m | grep -q 'pdo_dblib'
 
+RUN set -xe; \
+    docker-php-ext-install mssql \
+    && php -m | grep -q 'mssql' \
+    && php -m
+
 WORKDIR /var/www
 
 # RUN apt-get install -y libpng12-dev libfreetype6-dev libjpeg62-turbo-de
