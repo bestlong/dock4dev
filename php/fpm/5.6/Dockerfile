@@ -9,7 +9,10 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
         curl \
         libmcrypt-dev \
         libjpeg-dev libpng-dev \
-    && docker-php-ext-install mcrypt mysqli pdo_mysql \
+    && docker-php-ext-install mysqli pdo_mysql gd mcrypt \
+    && php -m | grep -q 'mysqli' \
+    && php -m | grep -q 'pdo_mysql' \
+    && php -m | grep -q 'gd' \
     && php -m | grep -q 'mcrypt'
 
 RUN set -xe; \
@@ -29,11 +32,8 @@ RUN set -xe; \
 
 WORKDIR /var/www
 
-RUN apt-get install -y libjpeg-dev
-RUN apt-get install -y libpng-dev
 # RUN apt-get install -y libpng12-dev libfreetype6-dev libjpeg62-turbo-de
 # RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
-RUN docker-php-ext-install gd
 
 # RUN docker-php-ext-install jpeg
 
