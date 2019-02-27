@@ -25,9 +25,9 @@ RUN set -xe; \
     && phpize \
     && ./configure \
     && make && make install \
+    && docker-php-ext-enable pdo_dblib \
     && rm -rf /tmp/PHP-7.1.tar.gz \
     && rm -rf /tmp/php-src-PHP-7.1 \
-    && docker-php-ext-enable pdo_dblib \
     && php -m | grep -q 'pdo_dblib'
 
 WORKDIR /var/www

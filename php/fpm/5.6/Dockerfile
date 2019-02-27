@@ -25,9 +25,9 @@ RUN set -xe; \
     && phpize \
     && ./configure \
     && make && make install \
+    && docker-php-ext-enable pdo_dblib \
     && rm -rf /tmp/PHP-5.6.tar.gz \
     && rm -rf /tmp/php-src-PHP-5.6 \
-    && docker-php-ext-enable pdo_dblib \
     && php -m | grep -q 'pdo_dblib'
 
 RUN set -xe; \
