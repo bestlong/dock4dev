@@ -30,6 +30,10 @@ RUN set -xe; \
     && rm -rf /tmp/php-src-PHP-7.1 \
     && php -m | grep -q 'pdo_dblib'
 
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug \
+    && php -m | grep -q 'xdebug'
+
 WORKDIR /var/www
 
 # RUN apt-get install -y libpng12-dev libfreetype6-dev libjpeg62-turbo-de

@@ -35,6 +35,10 @@ RUN set -xe; \
     && php -m | grep -q 'mssql' \
     && php -m
 
+RUN pecl install xdebug-2.5.5 \
+    && docker-php-ext-enable xdebug \
+    && php -m | grep -q 'xdebug'
+
 WORKDIR /var/www
 
 # RUN apt-get install -y libpng12-dev libfreetype6-dev libjpeg62-turbo-de
