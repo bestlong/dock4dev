@@ -10,8 +10,7 @@ RUN set -xe; ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/t
         libmcrypt-dev \
         libjpeg-dev libpng-dev \
     && docker-php-ext-install mysqli pdo_mysql gd \
-    && pecl install mcrypt-1.0.2 \
-    && docker-php-ext-enable mcrypt \
+    && pecl install mcrypt-1.0.2 && docker-php-ext-enable mcrypt \
     && php -m | grep -q 'mysqli' \
     && php -m | grep -q 'pdo_mysql' \
     && php -m | grep -q 'gd' \
